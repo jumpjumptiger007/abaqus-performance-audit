@@ -4,6 +4,16 @@ An offline command-line toolkit for measuring and comparing existing Abaqus runs
 
 **Release candidate** 1.0.0rc2 · Apache-2.0 · Windows 10/11 capture target (runtime unverified)
 
+## Compatibility and required pilot
+
+**UNVERIFIED — Windows PowerShell 5.1 runtime behavior has not yet been validated on the target Windows workstation.**
+
+**UNVERIFIED — Compatibility with real Abaqus diagnostic files, solver versions, and research workloads has not yet been established.**
+
+**REQUIRED — An authorized Windows pilot must be completed before production use.**
+
+The pilot must check process monitoring, performance counter availability, process exit, Ctrl+C interruption, and real Abaqus diagnostic format compatibility using representative, authorized nonconfidential records. [Windows pilot checklist](docs/WINDOWS-PILOT.md)
+
 ## Install and try the synthetic audit
 
 Extract the source archive or copy the repository to a local, non-synced folder. Run the commands from the repository root with Python 3.10 or later. The toolkit runs from source and requires zero Python packages. On macOS or Linux, substitute `python3` for `py -3`.
@@ -62,4 +72,6 @@ Run `py -3 -m unittest discover -s tests -v` or `python3 -m unittest discover -s
 
 ## License
 
-This project is independent of Dassault Systèmes and uses the [Apache License 2.0](LICENSE). The Abaqus name identifies the simulation software it audits. The archive contains project source and synthetic fixtures and reports. Python and Windows PowerShell are supplied by the user's environment. Copyright-holder and attribution metadata must be confirmed before public release.
+**Copyright 2026 Yiqiang Adrian Liu**
+
+Abaqus Performance Audit is an independently developed personal open-source project with no official affiliation with Dassault Systèmes. The Abaqus name identifies the simulation software it audits. The archive contains project source and synthetic fixtures and reports. Python and Windows PowerShell are supplied by the user's environment. [Apache License 2.0](LICENSE) · [Copyright notice](NOTICE)

@@ -16,11 +16,15 @@ Offline audit and comparison toolkit for Abaqus diagnostics and Windows process 
 
 Abaqus Performance Audit reads selected diagnostic files and Windows process captures and produces local JSON, CSV, and HTML reports. This independent project is separate from Dassault Systèmes. The Python CLI uses the standard library and runs offline.
 
-**UNVERIFIED — Windows PowerShell 5.1 runtime behavior has not been tested on the target Windows system.**
+**UNVERIFIED — Windows PowerShell 5.1 runtime behavior has not yet been validated on the target Windows workstation.**
 
-**UNVERIFIED — Compatibility with real Abaqus diagnostic files, solver versions, and research workloads has not been established.**
+**UNVERIFIED — Compatibility with real Abaqus diagnostic files, solver versions, and research workloads has not yet been established.**
 
-**REQUIRED — An authorized Windows pilot must test process monitoring, process exit, interruption, performance counters, and selected real Abaqus diagnostic records before production use.**
+**REQUIRED — An authorized Windows pilot must be completed before production use.**
+
+The pilot must check process monitoring, performance counter availability, process exit, Ctrl+C interruption, and real Abaqus diagnostic format compatibility using representative, authorized nonconfidential records. Follow the Windows pilot checklist in the repository.
+
+**Copyright 2026 Yiqiang Adrian Liu** · Apache-2.0
 
 ### Changes in RC2
 
