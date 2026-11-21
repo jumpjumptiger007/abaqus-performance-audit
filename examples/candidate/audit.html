@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Abaqus performance audit</title>
+<style>
+:root { color-scheme: light; font: 16px/1.54 system-ui, sans-serif; color: #17242d; }
+body { max-width: 76rem; margin: 2.5rem auto; padding: 0 1rem; }
+header { border-bottom: 3px solid #22615c; padding-bottom: 1rem; }
+h1 { line-height: 1.15; font-size: 2rem; }
+h2 { margin-top: 1.9rem; }
+h3 { margin-top: 1.45rem; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
+caption { font-weight: 650; text-align: left; margin-bottom: .3rem; }
+td, th { padding: .45rem .65rem; border-bottom: 1px solid #cad7d9; text-align: left;
+    overflow-wrap: anywhere; vertical-align: top; }
+thead { background: #e6efee; }
+tbody th { font-weight: 550; }
+ul { padding-left: 1.4rem; }
+li { margin: .3rem 0; }
+</style>
+</head>
+<body>
+<header>
+<h1>Abaqus performance audit</h1>
+<div>Tool version 1.0.0rc1 · 2026-11-21T16:43:26+00:00</div>
+</header>
+<main>
+<div class="table-wrap"><table><caption>Run information</caption><thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead><tbody><tr><th scope="row">Anonymous run ID</th><td>a9cad03b-7e5e-463a-8f8f-e67ea43eb61f</td></tr><tr><th scope="row">Termination</th><td>successful (job terminal)</td></tr><tr><th scope="row">Abaqus release</th><td>2026</td></tr><tr><th scope="row">Solver</th><td>standard</td></tr><tr><th scope="row">Parallel mode</th><td>threads</td></tr><tr><th scope="row">Requested cpus</th><td>2</td></tr></tbody></table></div><h2>Observed evidence</h2><div class="table-wrap"><table><caption>Measured and parsed values</caption><thead><tr><th scope="col">Measurement</th><th scope="col">Value</th><th scope="col">Unit</th><th scope="col">Basis</th></tr></thead><tbody><tr><th scope="row">Standard analysis phase</th><td>33</td><td>s</td><td>offset clock</td></tr><tr><th scope="row">Job elapsed</th><td>40</td><td>s</td><td>offset clock</td></tr></tbody></table></div><h2>Data completeness</h2><div class="table-wrap"><table><caption>Diagnostic inputs</caption><thead><tr><th scope="col">Alias</th><th scope="col">Read status</th><th scope="col">Unclassified lines</th></tr></thead><tbody><tr><th scope="row">file01.log</th><td>read</td><td>0</td></tr></tbody></table></div><div class="table-wrap"><table><caption>Monitoring capture</caption><thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead><tbody><tr><th scope="row">Capture state</th><td>not_selected</td></tr><tr><th scope="row">Selected processes</th><td>Unavailable</td></tr><tr><th scope="row">Logical processors reported to the monitor</th><td>Unavailable</td></tr><tr><th scope="row">Requested sample interval in seconds</th><td>Unavailable</td></tr><tr><th scope="row">Sample ticks</th><td>Unavailable</td></tr><tr><th scope="row">Elapsed seconds at last sample</th><td>Unavailable</td></tr></tbody></table></div><h2>Diagnostic references</h2><div class="table-wrap"><table><caption>Recognized and unclassified records</caption><thead><tr><th scope="col">Category</th><th scope="col">Line count</th></tr></thead><tbody><tr><th scope="row">job begin</th><td>1</td></tr><tr><th scope="row">job end</th><td>1</td></tr><tr><th scope="row">job success</th><td>1</td></tr><tr><th scope="row">standard begin</th><td>1</td></tr><tr><th scope="row">standard end</th><td>1</td></tr><tr><th scope="row">version</th><td>1</td></tr></tbody></table></div><div class="table-wrap"><table><caption>Representative line references</caption><thead><tr><th scope="col">File alias</th><th scope="col">Line</th><th scope="col">Category</th></tr></thead><tbody><tr><th scope="row">file01.log</th><td>1</td><td>version</td></tr><tr><th scope="row">file01.log</th><td>2</td><td>job begin</td></tr><tr><th scope="row">file01.log</th><td>3</td><td>standard begin</td></tr><tr><th scope="row">file01.log</th><td>4</td><td>standard end</td></tr><tr><th scope="row">file01.log</th><td>5</td><td>job end</td></tr><tr><th scope="row">file01.log</th><td>6</td><td>job success</td></tr></tbody></table></div><h2>Diagnostic hypotheses and next investigations</h2><p>No diagnostic rule was triggered by the available evidence.</p>
+<h2>Measurement and sharing limitations</h2>
+<ul><li>Monitoring evidence was unavailable.</li><li>Selected processes and files may cover only part of the job. Linkage to one specific run is operator-supplied.</li><li>Physical disk and available memory counters describe the workstation.</li><li>Selected process transfer counters include non-disk I/O. Working-set sums may count shared pages more than once.</li><li>A performance change requires a controlled comparison. Numerical equivalence and physical validation require separate checks.</li></ul>
+<p>Review the report and its measurements before external sharing.</p>
+</main>
+</body>
+</html>

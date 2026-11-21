@@ -1,0 +1,321 @@
+{
+  "schema_version": 1,
+  "kind": "comparison",
+  "tool_version": "1.0.0rc1",
+  "audit_timestamp_utc": "2026-11-21T16:43:26+00:00",
+  "baseline_run_id": "88258f49-249c-492e-944f-f8be72661dc8",
+  "baseline_termination": "successful",
+  "comparisons": [
+    {
+      "candidate_run_id": "a9cad03b-7e5e-463a-8f8f-e67ea43eb61f",
+      "candidate_termination": "successful",
+      "configuration": [
+        {
+          "field": "solver",
+          "baseline": "standard",
+          "candidate": "standard",
+          "state": "same"
+        },
+        {
+          "field": "parallel_mode",
+          "baseline": "threads",
+          "candidate": "threads",
+          "state": "same"
+        },
+        {
+          "field": "precision",
+          "baseline": null,
+          "candidate": null,
+          "state": "missing"
+        },
+        {
+          "field": "requested_cpus",
+          "baseline": 4,
+          "candidate": 2,
+          "state": "different"
+        },
+        {
+          "field": "abaqus_version",
+          "baseline": "2025 HF2",
+          "candidate": "2026",
+          "state": "different"
+        },
+        {
+          "field": "logical_processors",
+          "baseline": 4,
+          "candidate": null,
+          "state": "missing"
+        },
+        {
+          "field": "selected_process_count",
+          "baseline": 2,
+          "candidate": null,
+          "state": "missing"
+        },
+        {
+          "field": "interval_requested_seconds",
+          "baseline": 5,
+          "candidate": null,
+          "state": "missing"
+        }
+      ],
+      "measurements": [
+        {
+          "metric": "job_elapsed_seconds",
+          "unit": "s",
+          "baseline_value": 50.0,
+          "candidate_value": 40.0,
+          "baseline_basis": "offset_clock",
+          "candidate_basis": "offset_clock",
+          "delta": -10.0,
+          "percent_change": -20.0,
+          "state": "comparable"
+        },
+        {
+          "metric": "solver_wallclock_seconds",
+          "unit": "s",
+          "baseline_value": 40.0,
+          "candidate_value": null,
+          "baseline_basis": "solver_timing_summary",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "compiling_seconds",
+          "unit": "s",
+          "baseline_value": null,
+          "candidate_value": null,
+          "baseline_basis": null,
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "linking_seconds",
+          "unit": "s",
+          "baseline_value": null,
+          "candidate_value": null,
+          "baseline_basis": null,
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "preprocessing_seconds",
+          "unit": "s",
+          "baseline_value": 5.0,
+          "candidate_value": null,
+          "baseline_basis": "local_clock",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "standard_seconds",
+          "unit": "s",
+          "baseline_value": 40.0,
+          "candidate_value": 33.0,
+          "baseline_basis": "offset_clock",
+          "candidate_basis": "offset_clock",
+          "delta": -7.0,
+          "percent_change": -17.5,
+          "state": "comparable"
+        },
+        {
+          "metric": "explicit_seconds",
+          "unit": "s",
+          "baseline_value": null,
+          "candidate_value": null,
+          "baseline_basis": null,
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "monitoring_duration_seconds",
+          "unit": "s",
+          "baseline_value": 45,
+          "candidate_value": null,
+          "baseline_basis": "monotonic_capture_clock",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "full_set_cpu_duration_seconds",
+          "unit": "s",
+          "baseline_value": 40,
+          "candidate_value": null,
+          "baseline_basis": "valid_full_process_set_intervals",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "mean_cpu_normalized_percent",
+          "unit": "%",
+          "baseline_value": 20.0,
+          "candidate_value": null,
+          "baseline_basis": "valid_full_process_set_intervals",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "peak_sampled_working_set_sum_bytes",
+          "unit": "bytes",
+          "baseline_value": 400000000,
+          "candidate_value": null,
+          "baseline_basis": "full_process_set_samples",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "minimum_system_available_memory_bytes",
+          "unit": "bytes",
+          "baseline_value": 640000000,
+          "candidate_value": null,
+          "baseline_basis": "system_physical_memory_samples",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "minimum_system_available_memory_fraction",
+          "unit": "fraction",
+          "baseline_value": 0.08,
+          "candidate_value": null,
+          "baseline_basis": "system_physical_memory_samples",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "peak_system_disk_read_bytes_per_second",
+          "unit": "bytes/s",
+          "baseline_value": 4000,
+          "candidate_value": null,
+          "baseline_basis": "system_physical_disk_samples",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "peak_system_disk_write_bytes_per_second",
+          "unit": "bytes/s",
+          "baseline_value": 8000,
+          "candidate_value": null,
+          "baseline_basis": "system_physical_disk_samples",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "attempt_rows",
+          "unit": "count",
+          "baseline_value": 5,
+          "candidate_value": null,
+          "baseline_basis": "observed_rows",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "completed_increments",
+          "unit": "count",
+          "baseline_value": 2,
+          "candidate_value": null,
+          "baseline_basis": "observed_rows",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "unsuccessful_attempts",
+          "unit": "count",
+          "baseline_value": 3,
+          "candidate_value": null,
+          "baseline_basis": "observed_rows",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "observed_cutbacks",
+          "unit": "count",
+          "baseline_value": 3,
+          "candidate_value": null,
+          "baseline_basis": "observed_rows",
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "cutback_messages",
+          "unit": "count",
+          "baseline_value": null,
+          "candidate_value": null,
+          "baseline_basis": null,
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        },
+        {
+          "metric": "output_size_bytes",
+          "unit": "bytes",
+          "baseline_value": null,
+          "candidate_value": null,
+          "baseline_basis": null,
+          "candidate_basis": null,
+          "delta": null,
+          "percent_change": null,
+          "state": "missing",
+          "issue": "A measurement is missing or invalid in one or both runs."
+        }
+      ]
+    }
+  ],
+  "measurement_limitations": [
+    "Numerical equivalence and physical validation require separate checks. Timing differences do not establish an improvement.",
+    "Deltas use candidate minus baseline. Comparable means the available measurement bases passed the tool's checks.",
+    "Operator review must verify equivalent workload, selected processes, sampling window, and output selection."
+  ]
+}

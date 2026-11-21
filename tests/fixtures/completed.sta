@@ -1,0 +1,8 @@
+ STEP INC ATT SEVERE EQUIL TOTAL TOTAL STEP INC OF
+              DISCON ITERS ITERS TIME  TIME TIME/LPF
+   1   1   1U   0     5     5    0.0   0.0  2.0D-1
+   1   1   2U   0     4     4    0.0   0.0  1.0E-1
+   1   1   3U   0     4     4    0.0   0.0  5.0E-2
+   1   1   4    0     2     2    0.025 0.025 2.5E-2
+   1   2   1    0     3     3    0.075 0.075 5.0E-2
+THE ANALYSIS HAS COMPLETED SUCCESSFULLY

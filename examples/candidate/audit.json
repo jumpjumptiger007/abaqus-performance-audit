@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "kind": "audit",
+  "tool_version": "1.0.0rc1",
+  "run_id": "a9cad03b-7e5e-463a-8f8f-e67ea43eb61f",
+  "audit_timestamp_utc": "2026-11-21T16:43:26+00:00",
+  "abaqus_version": "2026",
+  "configuration": {
+    "solver": "standard",
+    "parallel_mode": "threads",
+    "requested_cpus": 2
+  },
+  "termination": {
+    "state": "successful",
+    "basis": "job_terminal"
+  },
+  "observations": {
+    "standard_seconds": {
+      "value": 33.0,
+      "unit": "s",
+      "basis": "offset_clock"
+    },
+    "job_elapsed_seconds": {
+      "value": 40.0,
+      "unit": "s",
+      "basis": "offset_clock"
+    }
+  },
+  "diagnostic_counts": {
+    "job_begin": 1,
+    "job_end": 1,
+    "job_success": 1,
+    "standard_begin": 1,
+    "standard_end": 1,
+    "version": 1
+  },
+  "data_completeness": {
+    "diagnostic_files": [
+      {
+        "file": "file01.log",
+        "state": "read",
+        "counts": {
+          "job_begin": 1,
+          "job_end": 1,
+          "job_success": 1,
+          "standard_begin": 1,
+          "standard_end": 1,
+          "version": 1
+        }
+      }
+    ],
+    "monitoring": {
+      "capture_state": "not_selected",
+      "limitations": [
+        "Monitoring evidence was unavailable."
+      ]
+    },
+    "selected_output_files": []
+  },
+  "phase_durations": {
+    "standard": {
+      "seconds": 33.0,
+      "basis": "offset_clock",
+      "evidence": [
+        {
+          "file": "file01.log",
+          "line": 3,
+          "category": "standard_begin"
+        },
+        {
+          "file": "file01.log",
+          "line": 4,
+          "category": "standard_end"
+        }
+      ]
+    },
+    "job": {
+      "seconds": 40.0,
+      "basis": "offset_clock",
+      "evidence": [
+        {
+          "file": "file01.log",
+          "line": 2,
+          "category": "job_begin"
+        },
+        {
+          "file": "file01.log",
+          "line": 5,
+          "category": "job_end"
+        }
+      ]
+    }
+  },
+  "increment_statistics": null,
+  "evidence": [
+    {
+      "file": "file01.log",
+      "line": 1,
+      "category": "version"
+    },
+    {
+      "file": "file01.log",
+      "line": 2,
+      "category": "job_begin"
+    },
+    {
+      "file": "file01.log",
+      "line": 3,
+      "category": "standard_begin"
+    },
+    {
+      "file": "file01.log",
+      "line": 4,
+      "category": "standard_end"
+    },
+    {
+      "file": "file01.log",
+      "line": 5,
+      "category": "job_end"
+    },
+    {
+      "file": "file01.log",
+      "line": 6,
+      "category": "job_success"
+    }
+  ],
+  "diagnostic_hypotheses": [],
+  "measurement_limitations": [
+    "Monitoring evidence was unavailable.",
+    "Selected processes and files may cover only part of the job. Linkage to one specific run is operator-supplied.",
+    "Physical disk and available memory counters describe the workstation.",
+    "Selected process transfer counters include non-disk I/O. Working-set sums may count shared pages more than once.",
+    "A performance change requires a controlled comparison. Numerical equivalence and physical validation require separate checks."
+  ]
+}

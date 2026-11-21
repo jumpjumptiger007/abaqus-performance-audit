@@ -1,0 +1,456 @@
+{
+  "schema_version": 1,
+  "kind": "audit",
+  "tool_version": "1.0.0rc1",
+  "run_id": "88258f49-249c-492e-944f-f8be72661dc8",
+  "audit_timestamp_utc": "2026-11-21T16:43:26+00:00",
+  "abaqus_version": "2025 HF2",
+  "configuration": {
+    "solver": "standard",
+    "parallel_mode": "threads",
+    "requested_cpus": 4
+  },
+  "termination": {
+    "state": "successful",
+    "basis": "job_terminal"
+  },
+  "observations": {
+    "preprocessing_seconds": {
+      "value": 5.0,
+      "unit": "s",
+      "basis": "local_clock"
+    },
+    "standard_seconds": {
+      "value": 40.0,
+      "unit": "s",
+      "basis": "offset_clock"
+    },
+    "job_elapsed_seconds": {
+      "value": 50.0,
+      "unit": "s",
+      "basis": "offset_clock"
+    },
+    "solver_wallclock_seconds": {
+      "value": 40.0,
+      "unit": "s",
+      "basis": "solver_timing_summary"
+    },
+    "monitoring_duration_seconds": {
+      "value": 45,
+      "unit": "s",
+      "basis": "monotonic_capture_clock"
+    },
+    "full_set_cpu_duration_seconds": {
+      "value": 40,
+      "unit": "s",
+      "basis": "valid_full_process_set_intervals"
+    },
+    "mean_cpu_normalized_percent": {
+      "value": 20.0,
+      "unit": "%",
+      "basis": "valid_full_process_set_intervals"
+    },
+    "peak_sampled_working_set_sum_bytes": {
+      "value": 400000000,
+      "unit": "bytes",
+      "basis": "full_process_set_samples"
+    },
+    "minimum_system_available_memory_bytes": {
+      "value": 640000000,
+      "unit": "bytes",
+      "basis": "system_physical_memory_samples"
+    },
+    "minimum_system_available_memory_fraction": {
+      "value": 0.08,
+      "unit": "fraction",
+      "basis": "system_physical_memory_samples"
+    },
+    "peak_system_disk_read_bytes_per_second": {
+      "value": 4000,
+      "unit": "bytes/s",
+      "basis": "system_physical_disk_samples"
+    },
+    "peak_system_disk_write_bytes_per_second": {
+      "value": 8000,
+      "unit": "bytes/s",
+      "basis": "system_physical_disk_samples"
+    },
+    "attempt_rows": {
+      "value": 5,
+      "unit": "count",
+      "basis": "observed_rows"
+    },
+    "completed_increments": {
+      "value": 2,
+      "unit": "count",
+      "basis": "observed_rows"
+    },
+    "unsuccessful_attempts": {
+      "value": 3,
+      "unit": "count",
+      "basis": "observed_rows"
+    },
+    "observed_cutbacks": {
+      "value": 3,
+      "unit": "count",
+      "basis": "observed_rows"
+    }
+  },
+  "diagnostic_counts": {
+    "analysis_success": 1,
+    "job_begin": 1,
+    "job_end": 1,
+    "job_success": 1,
+    "phase_timestamp": 2,
+    "preprocessing_begin": 1,
+    "preprocessing_end": 1,
+    "solver_wallclock": 1,
+    "standard_begin": 1,
+    "standard_end": 1,
+    "standard_header": 1,
+    "status_row": 5,
+    "timing_header": 1,
+    "unclassified": 5,
+    "version": 2,
+    "warning": 2
+  },
+  "data_completeness": {
+    "diagnostic_files": [
+      {
+        "file": "file01.log",
+        "state": "read",
+        "counts": {
+          "job_begin": 1,
+          "job_end": 1,
+          "job_success": 1,
+          "phase_timestamp": 2,
+          "preprocessing_begin": 1,
+          "preprocessing_end": 1,
+          "standard_begin": 1,
+          "standard_end": 1,
+          "version": 1
+        }
+      },
+      {
+        "file": "file02.sta",
+        "state": "read",
+        "counts": {
+          "analysis_success": 1,
+          "standard_header": 1,
+          "status_row": 5,
+          "unclassified": 1
+        }
+      },
+      {
+        "file": "file03.msg",
+        "state": "read",
+        "counts": {
+          "solver_wallclock": 1,
+          "timing_header": 1,
+          "unclassified": 3,
+          "warning": 1
+        }
+      },
+      {
+        "file": "file04.dat",
+        "state": "read",
+        "counts": {
+          "unclassified": 1,
+          "version": 1,
+          "warning": 1
+        }
+      }
+    ],
+    "monitoring": {
+      "capture_state": "duration_limit",
+      "monitoring_duration_seconds": 45,
+      "last_sample_elapsed_seconds": 40,
+      "interval_requested_seconds": 5,
+      "logical_processors": 4,
+      "selected_process_count": 2,
+      "sample_ticks": 9,
+      "available_observations": {
+        "available_memory_bytes": 9,
+        "total_memory_bytes": 9,
+        "system_disk_read_bytes_per_second": 9,
+        "system_disk_write_bytes_per_second": 9,
+        "cpu_seconds": 18,
+        "working_set_bytes": 18,
+        "read_transfer_bytes": 18,
+        "write_transfer_bytes": 18,
+        "age_seconds": 18,
+        "full_set_live_ticks": 9,
+        "full_working_set_ticks": 9,
+        "valid_memory_ticks": 9,
+        "full_cpu_intervals": 8
+      },
+      "measurement_issues": {},
+      "full_set_cpu_duration_seconds": 40,
+      "mean_cpu_normalized_percent": 20.0,
+      "peak_sampled_working_set_sum_bytes": 400000000,
+      "minimum_system_available_memory_bytes": 640000000,
+      "minimum_system_available_memory_fraction": 0.08,
+      "peak_system_disk_read_bytes_per_second": 4000,
+      "peak_system_disk_write_bytes_per_second": 8000,
+      "processes": [
+        {
+          "process": "process01",
+          "exit_observed": false,
+          "last_observed_age_seconds": 41,
+          "observed_read_transfer_bytes": 8000,
+          "observed_write_transfer_bytes": 12000
+        },
+        {
+          "process": "process02",
+          "exit_observed": false,
+          "last_observed_age_seconds": 41,
+          "observed_read_transfer_bytes": 8000,
+          "observed_write_transfer_bytes": 12000
+        }
+      ],
+      "limitations": [
+        "The capture may cover only part of the selected processes' lifetimes."
+      ]
+    },
+    "selected_output_files": []
+  },
+  "phase_durations": {
+    "preprocessing": {
+      "seconds": 5.0,
+      "basis": "local_clock",
+      "evidence": [
+        {
+          "file": "file01.log",
+          "line": 3,
+          "category": "preprocessing_begin"
+        },
+        {
+          "file": "file01.log",
+          "line": 5,
+          "category": "preprocessing_end"
+        }
+      ]
+    },
+    "standard": {
+      "seconds": 40.0,
+      "basis": "offset_clock",
+      "evidence": [
+        {
+          "file": "file01.log",
+          "line": 7,
+          "category": "standard_begin"
+        },
+        {
+          "file": "file01.log",
+          "line": 8,
+          "category": "standard_end"
+        }
+      ]
+    },
+    "job": {
+      "seconds": 50.0,
+      "basis": "offset_clock",
+      "evidence": [
+        {
+          "file": "file01.log",
+          "line": 2,
+          "category": "job_begin"
+        },
+        {
+          "file": "file01.log",
+          "line": 9,
+          "category": "job_end"
+        }
+      ]
+    }
+  },
+  "increment_statistics": {
+    "source": "file02.sta",
+    "last_usable_row": {
+      "step": 1,
+      "increment": 2,
+      "attempt": 1,
+      "unsuccessful": false,
+      "step_time": 0.075,
+      "evidence": {
+        "file": "file02.sta",
+        "line": 7,
+        "category": "status_row"
+      }
+    },
+    "attempt_rows": 5,
+    "completed_increments": 2,
+    "unsuccessful_attempts": 3,
+    "observed_cutbacks": 3,
+    "quality": "observed_rows"
+  },
+  "evidence": [
+    {
+      "file": "file01.log",
+      "line": 1,
+      "category": "version"
+    },
+    {
+      "file": "file01.log",
+      "line": 2,
+      "category": "job_begin"
+    },
+    {
+      "file": "file01.log",
+      "line": 3,
+      "category": "preprocessing_begin"
+    },
+    {
+      "file": "file01.log",
+      "line": 4,
+      "category": "phase_timestamp"
+    },
+    {
+      "file": "file01.log",
+      "line": 6,
+      "category": "phase_timestamp"
+    },
+    {
+      "file": "file01.log",
+      "line": 5,
+      "category": "preprocessing_end"
+    },
+    {
+      "file": "file01.log",
+      "line": 7,
+      "category": "standard_begin"
+    },
+    {
+      "file": "file01.log",
+      "line": 8,
+      "category": "standard_end"
+    },
+    {
+      "file": "file01.log",
+      "line": 9,
+      "category": "job_end"
+    },
+    {
+      "file": "file01.log",
+      "line": 10,
+      "category": "job_success"
+    },
+    {
+      "file": "file02.sta",
+      "line": 1,
+      "category": "standard_header"
+    },
+    {
+      "file": "file02.sta",
+      "line": 2,
+      "category": "unclassified"
+    },
+    {
+      "file": "file02.sta",
+      "line": 3,
+      "category": "status_row"
+    },
+    {
+      "file": "file02.sta",
+      "line": 4,
+      "category": "status_row"
+    },
+    {
+      "file": "file02.sta",
+      "line": 5,
+      "category": "status_row"
+    },
+    {
+      "file": "file02.sta",
+      "line": 6,
+      "category": "status_row"
+    },
+    {
+      "file": "file02.sta",
+      "line": 7,
+      "category": "status_row"
+    },
+    {
+      "file": "file02.sta",
+      "line": 8,
+      "category": "analysis_success"
+    },
+    {
+      "file": "file03.msg",
+      "line": 1,
+      "category": "warning"
+    },
+    {
+      "file": "file03.msg",
+      "line": 2,
+      "category": "unclassified"
+    },
+    {
+      "file": "file03.msg",
+      "line": 4,
+      "category": "unclassified"
+    },
+    {
+      "file": "file03.msg",
+      "line": 5,
+      "category": "unclassified"
+    },
+    {
+      "file": "file03.msg",
+      "line": 3,
+      "category": "timing_header"
+    },
+    {
+      "file": "file03.msg",
+      "line": 6,
+      "category": "solver_wallclock"
+    },
+    {
+      "file": "file04.dat",
+      "line": 1,
+      "category": "version"
+    },
+    {
+      "file": "file04.dat",
+      "line": 2,
+      "category": "warning"
+    },
+    {
+      "file": "file04.dat",
+      "line": 3,
+      "category": "unclassified"
+    }
+  ],
+  "diagnostic_hypotheses": [
+    {
+      "evidence": [
+        "mean_cpu_normalized_percent",
+        "full_set_cpu_duration_seconds"
+      ],
+      "hypothesis": "The selected processes may be waiting, running a serial phase, or covering only part of the job.",
+      "recommendation": "Confirm the worker PID set and align CPU intervals with timestamped solver phases."
+    },
+    {
+      "evidence": [
+        "minimum_system_available_memory_fraction"
+      ],
+      "hypothesis": "The workstation may have experienced memory pressure during the capture.",
+      "recommendation": "Check paging and other system activity in a controlled repeat."
+    },
+    {
+      "evidence": [
+        "observed_cutbacks"
+      ],
+      "hypothesis": "Repeated time-increment reductions may contribute additional solver work.",
+      "recommendation": "Inspect the referenced increments and relevant convergence diagnostics."
+    }
+  ],
+  "measurement_limitations": [
+    "Unclassified lines may contain unsupported diagnostics or ordinary output.",
+    "The capture may cover only part of the selected processes' lifetimes.",
+    "Selected processes and files may cover only part of the job. Linkage to one specific run is operator-supplied.",
+    "Physical disk and available memory counters describe the workstation.",
+    "Selected process transfer counters include non-disk I/O. Working-set sums may count shared pages more than once.",
+    "A performance change requires a controlled comparison. Numerical equivalence and physical validation require separate checks."
+  ]
+}

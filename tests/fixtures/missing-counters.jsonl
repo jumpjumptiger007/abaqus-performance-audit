@@ -1,0 +1,2 @@
+{"type":"start","schema_version":1,"timestamp_utc":"2025-01-02T12:00:01Z","logical_processors":4,"interval_seconds":5,"duration_limit_seconds":45,"system_disk_requested":true,"processes":[{"id":4001,"name":"SYNTHETIC_PROCESS_A","started_utc":"2025-01-02T12:00:00Z"},{"id":4002,"name":"SYNTHETIC_PROCESS_B","started_utc":"2025-01-02T12:00:00Z"}]}
+{"type":"sample","elapsed_seconds":1,"total_memory_bytes":1,"available_memory_bytes":2,"processes":[{"id":4001,"state":"sampled","cpu_seconds":"NaN","working_set_bytes":-1},{"id":4002,"state":"unavailable","cpu_seconds":120}]}
