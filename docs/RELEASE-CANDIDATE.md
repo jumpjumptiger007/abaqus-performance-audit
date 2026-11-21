@@ -1,33 +1,30 @@
-# V1.0 release candidate
+# Abaqus Performance Audit 1.0.0rc2
 
-**Version** 1.0.0rc2
+**Apache-2.0 · Local pre-publication candidate**
 
-**License** Apache-2.0
+## Compatibility and required pilot
 
-**Delivery** Local source repository and clean source ZIP for independent review and an authorized Windows pilot.
+**UNVERIFIED — Windows PowerShell 5.1 runtime behavior has not been tested on the target Windows system.**
 
-## RC2 remediation
+**UNVERIFIED — Compatibility with real Abaqus diagnostic files, solver versions, and research workloads has not been established.**
 
-RC2 separates audit execution IDs from optional simulation IDs and imports RC1 audit reports. Comparison output labels repeat audits and unknown simulation relationships and distinguishes measurement compatibility from workload, numerical, and physical validation. Generated report filenames are ignored even in custom output directories. The [publication checklist](../SECURITY.md#publication-checklist) requires manual inspection of tracked files, history, and the archive. See the [changelog](../CHANGELOG.md).
+**REQUIRED — An authorized Windows pilot must test process monitoring, process exit, interruption, performance counters, and selected real Abaqus diagnostic records before production use.**
 
-## Validation evidence
+Use the [Windows pilot checklist](WINDOWS-PILOT.md). The portable Python tests and earlier PowerShell syntax checks cover source and synthetic behavior. Use authorized, nonconfidential records representative of the target solver versions and workloads when checking real diagnostic files.
 
-| Check | Result |
-| --- | --- |
-| Python unit and CLI integration tests on macOS | 28 passed with Python 3.10.9 and 28 with Python 3.14.7. |
-| Python syntax and dependencies | Package and tests compiled. Runtime Python imports are standard-library only. |
-| PowerShell syntax | Both scripts parsed without errors using PowerShell 7.2.24's parser on macOS. |
-| Synthetic end-to-end CLI | Distinct-identity, repeat-audit, and mixed RC1/RC2 comparisons passed, including an audit imported from the original RC1 ZIP. The baseline recorded 50 seconds, two completed increments, three observed cutbacks, and 20% normalized CPU. The distinct candidate's elapsed delta was −10 seconds and the repeat audit's delta was zero. |
-| Security and privacy | All 14 synthetic input hashes matched after end-to-end commands. Audit and comparison tests blocked socket, DNS, and subprocess calls. HTML checks confirmed escaping, a restrictive content security policy, and the absence of active or externally loaded content. |
-| Publication inspection | Custom-directory ignore rules and synthetic-example exceptions were exercised. The tracked files, reachable local history, and contents of the source ZIP were inspected for unexpected inputs or generated artifacts. |
-| Windows PowerShell 5.1 runtime | **UNVERIFIED.** Run the automated monitor test and workstation checks in the [Windows pilot checklist](WINDOWS-PILOT.md). |
-| Real Abaqus format compatibility | **UNVERIFIED.** Use authorized, nonconfidential historical records for the intended Abaqus releases and solvers. |
-| Focused independent RC2 review | **UNVERIFIED.** The installed C2C CLI found no running connection, saved conversation, or configured connector for this repository. The RC2 ZIP is ready for independent inspection. |
+## Pre-publication evidence
 
-## Licensing and public-release readiness
+- The project handoff records that the RC2 application source passed independent review. This audit updates release documentation and packaging. The application source, scripts, fixtures, and example reports are identical to the reviewed RC2 candidate.
+- All 28 existing Python tests passed on macOS with Python 3.10.6 and 3.14.7. The test suite also passed from a fresh extraction of the final source ZIP. It covers synthetic diagnostic parsing, audit identity, RC1 import, comparisons, and report safety.
+- The review covered the current index and working tree, every reachable commit and local branch, and the four unreachable draft blobs in the local object database. There were no remote or tag references and no staged, untracked, or ignored files after the release documentation commit.
+- Historical blobs and ZIP contents were screened for private paths, personal identifiers, credential and certificate signatures, and unexpected file types. Review found only the intended project files, 14 synthetic fixtures, and eight generated synthetic examples. The unreachable drafts are excluded from the archive. The archive passed integrity checks and matched the selected Git tree byte for byte. [Publication security checklist](../SECURITY.md#publication-checklist)
 
-The top-level license matches the complete Apache-2.0 text byte for byte. The ZIP distributes only project material, synthetic fixtures and reports, and the license text. Python and Windows PowerShell are supplied by the user's environment. The available history and archive identified no bundled third-party packages or separate redistribution notices. This is an independent project. The Abaqus name identifies the software from Dassault Systèmes. [Apache License text](https://www.apache.org/licenses/LICENSE-2.0.txt)
+## Licensing
 
-Copyright ownership and the attribution year could not be established from the repository. Before public release, confirm the holder, authority to publish, and attribution year, and record the approved notice. No copyright owner was inferred from the commit metadata.
+The complete root `LICENSE` is unchanged from the initial commit and matches the canonical Apache-2.0 text. The project and distribution documentation identify Apache-2.0 consistently. The project is independent of Dassault Systèmes. Local review found no bundled proprietary Abaqus code, third-party packages, or additional redistribution notices. Python and Windows PowerShell are supplied by the user's environment. [Canonical Apache-2.0 license](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
-**Ready for independent review. Public release remains blocked** pending copyright attribution and release authorization, manual publication inspection, focused RC2 review, and the relevant Windows and Abaqus pilot checks.
+## Publication decision
+
+**BLOCKED pending attribution and authorization.** The repository has no reliable record establishing the copyright holder, attribution year, or authority to distribute the project publicly. Git author metadata identifies commits and does not establish ownership. Confirm the holder's full legal name, the applicable attribution year or range, and the authority to publish under Apache-2.0. Then record the approved notice and reverify the exact release commit and ZIP.
+
+Explicit approval is required to create the public GitHub repository, push the intended branch or tag, and publish the pre-release or its ZIP. The authorized Windows pilot is required before production use. [Draft GitHub description and pre-release notes](GITHUB-PRE-RELEASE.md)

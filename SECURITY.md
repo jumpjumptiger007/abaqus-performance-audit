@@ -20,11 +20,15 @@ HTML reports escape interpolated content and use a restrictive Content Security 
 
 Keep real audit output, raw captures, and private evidence in an access-controlled, non-synced directory outside the repository. Use `tests/fixtures/` and the checked-in paths under `examples/` for synthetic material. The repository ignores the CLI's standard generated filenames even in custom output directories. Renamed artifacts, force-added files, and already tracked files can still enter or remain in Git history.
 
-Manual inspection is required before publishing:
+Manual inspection is required for the exact commit, references, and archive intended for publication:
 
-1. Review `git status --short --ignored`, `git diff --cached`, and `git ls-files` for private inputs, generated reports, maps, captures, personal identifiers, and credentials.
-2. For repository publication, inspect the history and references intended for sharing using `git log --all --name-status` and review past file contents where needed. Ignore rules do not remove already tracked files or earlier copies.
-3. List and inspect the actual archive before sharing it. Verify that fixtures and example reports are synthetic and that attribution and publication authorization are recorded.
+1. Review `git status --short --ignored --untracked-files=all`, `git diff --cached`, and `git ls-files`. Check for private paths or identifiers, credentials, certificates, research files, captures, and generated reports. Confirm the provenance of each fixture and example. Ignore rules leave already tracked files and earlier copies in history.
+2. Enumerate branches, tags, and other references with `git for-each-ref`. Review the intended history with `git log --all --name-status` and inspect historical blobs. Use `git fsck --full --strict --no-reflogs` to check object integrity and identify unreachable objects. Keep the local `.git` directory and its unreachable content out of the source ZIP.
+3. Verify the ZIP independently of ignore rules. List every entry and compare its contents against the intended committed tree. Check that the archive carries the full license and only intended source, documentation, and synthetic artifacts.
+4. Record any finding by path or object ID and issue type. Keep sensitive contents out of the audit notes. Obtain approval before deleting files or rewriting history. Repeat these checks after any correction.
+5. Confirm the approved copyright notice and explicit authorization for the intended public repository, references, and pre-release before creating, pushing, or publishing anything.
+
+Automated checks can identify known signatures and unexpected files. Manual review is still required to assess private context and redistribution rights.
 
 ## Reporting a vulnerability
 

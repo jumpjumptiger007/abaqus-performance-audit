@@ -2,7 +2,7 @@
 
 An offline command-line toolkit for measuring and comparing existing Abaqus runs. It reads selected diagnostic files, optionally combines them with a Windows resource capture, and produces a local audit. A model, input deck, user subroutine, and Abaqus installation are unnecessary for offline analysis.
 
-**Release candidate** 1.0.0rc2 · Apache-2.0 · Windows 10/11 for live capture
+**Release candidate** 1.0.0rc2 · Apache-2.0 · Windows 10/11 capture target (runtime unverified)
 
 ## Install and try the synthetic audit
 
@@ -62,4 +62,4 @@ Run `py -3 -m unittest discover -s tests -v` or `python3 -m unittest discover -s
 
 ## License
 
-This independent project uses the [Apache License 2.0](LICENSE). The Abaqus name identifies the simulation software from Dassault Systèmes. The archive contains project source and synthetic fixtures and reports. Python and Windows PowerShell are supplied by the user's environment. Copyright-holder and attribution metadata must be confirmed before public release.
+This project is independent of Dassault Systèmes and uses the [Apache License 2.0](LICENSE). The Abaqus name identifies the simulation software it audits. The archive contains project source and synthetic fixtures and reports. Python and Windows PowerShell are supplied by the user's environment. Copyright-holder and attribution metadata must be confirmed before public release.
