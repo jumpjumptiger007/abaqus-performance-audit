@@ -45,7 +45,30 @@ The aggregate CSV has one row per anonymous process per tick. Elapsed time is re
 
 The fixed thresholds prioritize investigation. They do not establish root causes. The JSON separates evidence values, hypothesized explanations, recommendations, and measurement limitations.
 
-Comparison reads schema-version-1 `audit.json` files up to 16 MiB each. Anonymous run IDs must differ. The comparison rejects incompatible bases, reports missing values, flags partial status and capture evidence, checks monitor scope and coverage, and shows operator-supplied configuration differences. Workloads and physics still need review. Sampled memory and disk peaks use comparable coverage only when the required counter observations are present. Reported changes are candidate minus baseline. Percent change is unavailable with a zero baseline.
+Comparison rejects incompatible bases, reports missing values, flags partial status and capture evidence, checks monitor scope and coverage, and shows operator-supplied configuration differences. Sampled memory and disk peaks require sufficient counter observations. Changes are candidate minus baseline. Percent change is unavailable with a zero baseline.
+
+A metric with state `comparable` has compatible available measurements under the tool's checks. Assess workload equivalence, including mesh, materials, sources, boundary conditions, incrementation, and workload, independently. Check numerical outputs against study-specific tolerances and validate physical behavior with appropriate evidence.
+
+## Report identities and schema compatibility
+
+RC2 emits schema-version-2 audit and comparison JSON. An audit includes two separate identifiers.
+
+| Field | Meaning |
+| --- | --- |
+| `audit_id` | A new lowercase canonical version 4 UUID for each execution of the audit command. |
+| `run_id` | A stable simulation pseudonym supplied with `--run-id`, or JSON `null` if omitted. Use `[a-z0-9][a-z0-9_-]{0,63}`. The field is present even when its value is null. |
+
+Select the simulation pseudonym independently of file names, paths, or researcher names. The tool generates no simulation ID from source contents or metadata. For repeat audits of the same simulation, use the same pseudonym.
+
+Comparison accepts schema-1 and schema-2 audit JSON up to 16 MiB per input and requires distinct audit execution IDs. A schema-1 audit's legacy `run_id` is read as an `audit_id`, with simulation identity set to unknown. Other schema versions and malformed identifiers are rejected. The monitor JSONL schema stays at version 1.
+
+The comparison output includes `baseline_audit_id` and `baseline_run_id`, both candidate identifiers, and a `run_relationship` value for each pair.
+
+| Relationship | Meaning |
+| --- | --- |
+| `same_declared_run` | Both audits declare the same simulation. Measurement differences can support an audit reproducibility check. |
+| `different_declared_runs` | The operator supplied different simulation IDs. Verification of experimental independence and workload equivalence remains separate. |
+| `unknown` | One or both simulation IDs are unavailable. The relationship between the simulations is unverified. |
 
 ## Future read-only extraction
 

@@ -4,7 +4,7 @@ import sys
 from contextlib import nullcontext
 
 from . import __version__
-from .analysis import CONFIG_FIELDS, OUTPUT_SUFFIXES, audit
+from .analysis import CONFIG_FIELDS, OUTPUT_SUFFIXES, audit, validate_run_id
 from .comparison import compare
 from .logs import SUFFIXES
 from .paths import local_path, prepare_directories
@@ -37,6 +37,7 @@ def parser():
                          help="diagnostic text encoding (default: utf-8)")
     for key, choices in CONFIG_FIELDS.items():
         inspect.add_argument("--" + key.replace("_", "-"), choices=choices, help="operator-supplied configuration")
+    inspect.add_argument("--run-id", metavar="ID", help="stable anonymous ID for the simulation run")
     inspect.add_argument("--requested-cpus", type=cpu_count, help="operator-supplied requested solver CPU count")
     comparison = commands.add_parser("compare", help="compare audits to the first supplied report")
     comparison.add_argument("reports", nargs="+", metavar="AUDIT_JSON")
@@ -54,6 +55,7 @@ def _select(values, suffixes):
 
 
 def _audit_command(args, destination):
+    run_id = validate_run_id(args.run_id)
     logs = _select(args.log, SUFFIXES)
     outputs = _select(args.output_file, OUTPUT_SUFFIXES)
     monitor = _select([args.monitor], {".jsonl"})[0] if args.monitor else None
@@ -67,7 +69,7 @@ def _audit_command(args, destination):
     raw_context = ((local / "diagnostic-lines.jsonl").open("x", encoding="utf-8", newline="\n")
                    if local is not None else nullcontext())
     with raw_context as raw, timeseries_writer(destination) as emit:
-        report, _ = audit(logs, monitor, outputs, args.encoding, config, raw, emit)
+        report, _ = audit(logs, monitor, outputs, args.encoding, config, raw, emit, run_id=run_id)
     write_reports(destination, report)
 
 

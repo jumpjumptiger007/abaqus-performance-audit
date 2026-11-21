@@ -1,4 +1,5 @@
 """Combine scoped observations and apply documented diagnostic rules."""
+import re
 from datetime import datetime, timezone
 from uuid import uuid4
 
@@ -7,6 +8,7 @@ from .logs import analyze_logs
 from .monitor import analyze_monitor
 from .paths import require_regular
 
+RUN_ID_PATTERN = re.compile(r"[a-z0-9][a-z0-9_-]{0,63}")
 OUTPUT_SUFFIXES = {".odb", ".sim", ".fil", ".sel"}
 CONFIG_FIELDS = {
     "solver": ("standard", "explicit"),
@@ -148,7 +150,17 @@ def diagnoses(metrics, monitor, logs):
     return findings
 
 
-def audit(log_paths, monitor_path, output_paths, encoding, configuration, raw=None, emit_sample=None):
+def validate_run_id(run_id):
+    if run_id is not None and (not isinstance(run_id, str) or RUN_ID_PATTERN.fullmatch(run_id) is None):
+        raise ValueError(
+            "A simulation run ID must have 1 to 64 lowercase ASCII letters, digits, hyphens or underscores, "
+            "starting with a letter or digit"
+        )
+    return run_id
+
+
+def audit(log_paths, monitor_path, output_paths, encoding, configuration, raw=None, emit_sample=None, *, run_id=None):
+    run_id = validate_run_id(run_id)
     logs = analyze_logs(log_paths, encoding, raw)
     monitor, series = analyze_monitor(monitor_path, emit_sample)
     outputs = output_sizes(output_paths)
@@ -170,7 +182,8 @@ def audit(log_paths, monitor_path, output_paths, encoding, configuration, raw=No
         "schema_version": SCHEMA_VERSION,
         "kind": "audit",
         "tool_version": __version__,
-        "run_id": str(uuid4()),
+        "audit_id": str(uuid4()),
+        "run_id": run_id,
         "audit_timestamp_utc": utc_now(),
         "abaqus_version": logs["abaqus_version"],
         "configuration": configuration,

@@ -14,6 +14,7 @@ header { border-bottom: 3px solid #22615c; padding-bottom: 1rem; }
 h1 { line-height: 1.15; font-size: 2rem; }
 h2 { margin-top: 1.9rem; }
 h3 { margin-top: 1.45rem; }
+.comparison-scope { margin-top: 1.25rem; padding: .5rem 1rem; border-left: 4px solid #22615c; background: #eef5f4; }
 .table-wrap { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; margin-bottom: 1rem; }
 caption { font-weight: 650; text-align: left; margin-bottom: .3rem; }
@@ -71,7 +72,8 @@ def _capture_rows(monitor):
 def _audit_body(report):
     termination = report["termination"]
     summary = [
-        ("Anonymous run ID", report["run_id"]),
+        ("Audit execution ID", report["audit_id"]),
+        ("Declared simulation run ID", report["run_id"]),
         ("Termination", f'{termination["state"]} ({termination["basis"].replace("_", " ")})'),
         ("Abaqus release", report["abaqus_version"]),
         *((label(key), value) for key, value in report["configuration"].items()),
@@ -139,15 +141,33 @@ def _audit_body(report):
 
 
 def _comparison_body(report):
+    scope = report["interpretation"]
+    relationship_text = {
+        "same_declared_run": "Repeat audit of the same declared simulation run. Use differences to check audit reproducibility.",
+        "different_declared_runs": "The operator supplied different simulation run IDs.",
+        "unknown": "Simulation identity is unknown for one or both audits. Independence is unverified.",
+    }
     content = [
-        f'<p><strong>Baseline</strong> {escaped(report["baseline_run_id"])} '
-        f'({escaped(report["baseline_termination"])})</p>',
+        '<aside class="comparison-scope" aria-label="How to interpret this comparison">'
+        f'<p><strong>{escaped(scope["summary"])}</strong></p>'
+        + listing(f"{label(key)}. {value}" for key, value in scope.items() if key != "summary")
+        + "</aside>",
+        "<h2>Baseline audit</h2>",
+        f'<p><strong>Audit execution ID</strong> {escaped(report["baseline_audit_id"])}<br>'
+        f'<strong>Declared simulation run ID</strong> {escaped(report["baseline_run_id"])}<br>'
+        f'<strong>Termination</strong> {escaped(report["baseline_termination"])}</p>',
     ]
     for comparison in report["comparisons"]:
-        content.append(f'<h2>Candidate {escaped(comparison["candidate_run_id"])}</h2>')
-        content.append(f'<p><strong>Termination</strong> {escaped(comparison["candidate_termination"])}</p>')
+        relationship = relationship_text[comparison["run_relationship"]]
+        content.append(
+            "<h2>Candidate audit</h2>"
+            f'<p><strong>Audit execution ID</strong> {escaped(comparison["candidate_audit_id"])}<br>'
+            f'<strong>Declared simulation run ID</strong> {escaped(comparison["candidate_run_id"])}<br>'
+            f'<strong>Termination</strong> {escaped(comparison["candidate_termination"])}</p>'
+            f'<p><strong>{escaped(relationship)}</strong></p>'
+        )
         content.append(table(
-            "Measurements", ("Metric", "Unit", "Baseline", "Candidate", "Delta", "Change (%)", "Status"),
+            "Measurements", ("Metric", "Unit", "Baseline", "Candidate", "Delta", "Change (%)", "Measurement status"),
             ((label(item["metric"]), item["unit"], item["baseline_value"], item["candidate_value"],
               item["delta"], item["percent_change"],
               f'{item["state"].capitalize()} — {item["issue"]}' if "issue" in item else "Comparable")
@@ -161,7 +181,7 @@ def _comparison_body(report):
 
 def render_html(report):
     is_audit = report["kind"] == "audit"
-    title = "Abaqus performance audit" if is_audit else "Abaqus run comparison"
+    title = "Abaqus performance audit" if is_audit else "Abaqus audit comparison"
     body = _audit_body(report) if is_audit else _comparison_body(report)
     return f"""<!doctype html>
 <html lang="en">

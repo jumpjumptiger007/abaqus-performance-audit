@@ -5,6 +5,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+from uuid import UUID, uuid4
 
 from abaqus_audit.__main__ import main
 from abaqus_audit.analysis import audit
@@ -191,8 +192,12 @@ class CliTests(unittest.TestCase):
                 patch("subprocess.Popen", side_effect=AssertionError("process launch")):
             self.command("audit", "--log", log, "--monitor", FIXTURES / "capture.jsonl",
                          "--out-dir", out, "--local-dir", raw, "--solver", "standard")
+            other = self.root / "other"
+            self.command("audit", "--log", log, "--out-dir", other)
+            comparison = self.root / "comparison"
+            self.command("compare", out / "audit.json", other / "audit.json", "--out-dir", comparison)
         self.assertEqual(log.read_bytes(), original)
-        for path in out.iterdir():
+        for path in (*out.iterdir(), *comparison.iterdir()):
             content = path.read_text(encoding="utf-8")
             for secret in (str(self.root), "SYNTHETIC_PRIVATE_FILENAME", "SYNTHETIC_PROCESS_A", "example.invalid", "<script>"):
                 self.assertNotIn(secret, content)
@@ -216,17 +221,129 @@ class CliTests(unittest.TestCase):
         self.assertNotIn("<script>", content)
         self.assertIn("default-src 'none'", content)
 
+    def test_repeat_audit_preserves_declared_run_and_assigns_distinct_audit_ids(self):
+        first, second = self.root / "first", self.root / "second"
+        for destination in (first, second):
+            self.command("audit", "--log", FIXTURES / "completed.log", "--run-id", "trial_01-a",
+                         "--out-dir", destination)
+        inputs = [path / "audit.json" for path in (first, second)]
+        baseline, candidate = [json.loads(path.read_text()) for path in inputs]
+        for report in (baseline, candidate):
+            self.assertEqual(report["schema_version"], 2)
+            self.assertEqual(report["tool_version"], "1.0.0rc2")
+            self.assertEqual(report["run_id"], "trial_01-a")
+            self.assertEqual(UUID(report["audit_id"]).version, 4)
+        self.assertNotEqual(baseline["audit_id"], candidate["audit_id"])
+        self.assertEqual(baseline["observations"], candidate["observations"])
+        audit_html = inputs[0].with_suffix(".html").read_text(encoding="utf-8")
+        for text in ("Audit execution ID", "Declared simulation run ID", baseline["audit_id"], "trial_01-a"):
+            self.assertIn(text, audit_html)
+
+        out = self.root / "comparison"
+        self.command("compare", *inputs, "--out-dir", out)
+        result = json.loads((out / "comparison.json").read_text())
+        entry = result["comparisons"][0]
+        self.assertEqual(result["baseline_audit_id"], baseline["audit_id"])
+        self.assertEqual(entry["candidate_audit_id"], candidate["audit_id"])
+        self.assertEqual(result["baseline_run_id"], entry["candidate_run_id"])
+        self.assertEqual(entry["run_relationship"], "same_declared_run")
+        self.assertIn("Repeat audit of the same declared simulation run",
+                      (out / "comparison.html").read_text(encoding="utf-8"))
+
+        copy = self.root / "duplicate.json"
+        copy.write_bytes(inputs[0].read_bytes())
+        rejected = self.root / "rejected"
+        self.command("compare", inputs[0], copy, "--out-dir", rejected, expected=2)
+        self.assertFalse(rejected.exists())
+
+    def test_identical_unnamed_audits_have_unknown_simulation_relationship(self):
+        inputs = []
+        for name in ("first", "second"):
+            dest = self.root / name
+            self.command("audit", "--log", FIXTURES / "completed.log", "--out-dir", dest)
+            inputs.append(dest / "audit.json")
+        baseline, candidate = [json.loads(path.read_text()) for path in inputs]
+        self.assertIsNone(baseline["run_id"])
+        self.assertIsNone(candidate["run_id"])
+        self.assertNotEqual(baseline["audit_id"], candidate["audit_id"])
+        self.assertEqual(baseline["observations"], candidate["observations"])
+        out = self.root / "comparison"
+        self.command("compare", *inputs, "--out-dir", out)
+        result = json.loads((out / "comparison.json").read_text())
+        self.assertEqual(result["comparisons"][0]["run_relationship"], "unknown")
+        self.assertIn("Independence is unverified", (out / "comparison.html").read_text(encoding="utf-8"))
+
+    def test_cli_rejects_malformed_or_unsafe_declared_run_ids_before_writing(self):
+        destination = self.root / "report"
+        for identifier in ("", "_first", "-first", "A", "é", "a" * 65, "a b", "a/b",
+                           "a\\b", "a.b", "<script>", "a\n"):
+            with self.subTest(identifier=identifier):
+                self.command("audit", "--log", FIXTURES / "completed.log", "--run-id=" + identifier,
+                             "--out-dir", destination, expected=2)
+                self.assertFalse(destination.exists())
+        self.command("audit", "--log", FIXTURES / "completed.log", "--run-id", "a" * 64,
+                     "--out-dir", destination)
+
+    def test_import_rejects_missing_malformed_or_unsafe_identities_and_schemas(self):
+        current, _ = audit([], None, [], "utf-8", {}, run_id="anon-01")
+        baseline = self.root / "baseline.json"
+        baseline.write_text(json.dumps(current))
+        candidate = self.root / "candidate.json"
+        output = self.root / "comparison"
+        for name, value in (("audit_id", None), ("audit_id", "<script>"), ("audit_id", 1),
+                            ("run_id", {"custom": "text"}), ("run_id", "a/secret"),
+                            ("schema_version", 99), ("schema_version", True)):
+            with self.subTest(name=name, value=value):
+                candidate.write_text(json.dumps({**current, "audit_id": str(uuid4()), name: value}))
+                self.command("compare", baseline, candidate, "--out-dir", output, expected=2)
+                self.assertFalse(output.exists())
+        for name in ("audit_id", "run_id"):
+            with self.subTest(missing=name):
+                data = {**current, "audit_id": str(uuid4())}
+                del data[name]
+                candidate.write_text(json.dumps(data))
+                self.command("compare", baseline, candidate, "--out-dir", output, expected=2)
+                self.assertFalse(output.exists())
+        candidate.write_text(json.dumps({"kind": "audit", "schema_version": 1, "run_id": "not-a-legacy-uuid"}))
+        self.command("compare", baseline, candidate, "--out-dir", output, expected=2)
+
+    def test_legacy_uuid_is_an_audit_id_and_preserves_unknown_simulation_identity(self):
+        first = self.root / "legacy-first.json"
+        second = self.root / "legacy-second.json"
+        for destination, fixture in ((first, "completed.log"), (second, "candidate.log")):
+            report, _ = audit([FIXTURES / fixture], None, [], "utf-8", {})
+            report.update(schema_version=1, tool_version="1.0.0rc1", run_id=report.pop("audit_id"))
+            destination.write_text(json.dumps(report))
+        current = self.root / "current"
+        self.command("audit", "--log", FIXTURES / "candidate.log", "--run-id", "anon-02", "--out-dir", current)
+        out = self.root / "comparison"
+        self.command("compare", first, second, current / "audit.json", "--out-dir", out)
+        result = json.loads((out / "comparison.json").read_text())
+        self.assertEqual(result["baseline_audit_id"], json.loads(first.read_text())["run_id"])
+        self.assertIsNone(result["baseline_run_id"])
+        legacy_candidate, current_candidate = result["comparisons"]
+        self.assertEqual(legacy_candidate["candidate_audit_id"], json.loads(second.read_text())["run_id"])
+        self.assertIsNone(legacy_candidate["candidate_run_id"])
+        self.assertEqual(current_candidate["candidate_run_id"], "anon-02")
+        self.assertEqual([item["run_relationship"] for item in result["comparisons"]], ["unknown", "unknown"])
+        elapsed = next(item for item in legacy_candidate["measurements"] if item["metric"] == "job_elapsed_seconds")
+        self.assertEqual(elapsed["delta"], -10)
+
     def test_comparison_of_three_runs_with_incomplete_and_different_config(self):
         directories = [self.root / value for value in ("first", "second", "third")]
         self.command("audit", "--log", FIXTURES / "completed.log", "--log", FIXTURES / "completed.sta",
-                     "--requested-cpus", 8, "--out-dir", directories[0])
+                     "--requested-cpus", 8, "--run-id", "synthetic-baseline", "--out-dir", directories[0])
         self.command("audit", "--log", FIXTURES / "candidate.log", "--requested-cpus", 4,
-                     "--out-dir", directories[1])
+                     "--run-id", "synthetic-candidate", "--out-dir", directories[1])
         self.command("audit", "--log", FIXTURES / "inconsistent.sta", "--out-dir", directories[2])
         out = self.root / "comparison"
         self.command("compare", *(path / "audit.json" for path in directories), "--out-dir", out)
         result = json.loads((out / "comparison.json").read_text())
         second, third = result["comparisons"]
+        self.assertEqual(result["baseline_run_id"], "synthetic-baseline")
+        self.assertEqual(second["candidate_run_id"], "synthetic-candidate")
+        self.assertEqual(second["run_relationship"], "different_declared_runs")
+        self.assertEqual(third["run_relationship"], "unknown")
         measurement = {item["metric"]: item for item in second["measurements"]}
         self.assertEqual(measurement["job_elapsed_seconds"]["delta"], -10)
         self.assertEqual(measurement["job_elapsed_seconds"]["percent_change"], -20)
@@ -235,8 +352,15 @@ class CliTests(unittest.TestCase):
         self.assertEqual(comparison["completed_increments"]["state"], "incomparable")
         self.assertTrue(any(item["field"] == "requested_cpus" and item["state"] == "different"
                             for item in second["configuration"]))
-        self.assertIn("Numerical equivalence and physical validation require separate checks",
-                      (out / "comparison.html").read_text(encoding="utf-8"))
+        html = (out / "comparison.html").read_text(encoding="utf-8")
+        self.assertIn("Numerical equivalence and physical validation require separate checks", html)
+        self.assertEqual(set(result["interpretation"]), {
+            "summary", "measurement_compatibility", "workload_equivalence", "numerical_equivalence", "physical_validation",
+        })
+        warning = "Measurement comparability does not establish simulation equivalence or scientific validity."
+        self.assertEqual(result["interpretation"]["summary"], warning)
+        self.assertLess(html.index(warning), html.index("<caption>Measurements"))
+        self.assertIn("Measurement status", html)
 
     def test_comparison_requires_adequate_monitor_coverage(self):
         reports = []

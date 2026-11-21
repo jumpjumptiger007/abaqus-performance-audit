@@ -1,9 +1,10 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "audit",
-  "tool_version": "1.0.0rc1",
-  "run_id": "88258f49-249c-492e-944f-f8be72661dc8",
-  "audit_timestamp_utc": "2026-11-21T16:43:26+00:00",
+  "tool_version": "1.0.0rc2",
+  "audit_id": "78b2f0a0-1032-4853-86ae-86b7dc8cb355",
+  "run_id": "synthetic-baseline",
+  "audit_timestamp_utc": "2026-11-21T17:09:21+00:00",
   "abaqus_version": "2025 HF2",
   "configuration": {
     "solver": "standard",

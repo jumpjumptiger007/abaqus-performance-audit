@@ -4,14 +4,20 @@ import math
 import re
 
 from . import SCHEMA_VERSION, __version__
-from .analysis import CONFIG_FIELDS, MEASURES, METRIC_BASES, MONITOR_BASES, OUTPUT_SUFFIXES, utc_now
+from .analysis import CONFIG_FIELDS, MEASURES, METRIC_BASES, MONITOR_BASES, OUTPUT_SUFFIXES, utc_now, validate_run_id
 from .monitor import nonnegative
 from .paths import require_regular
 
-RUN_ID = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
+AUDIT_ID = re.compile(r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}")
 VERSION = re.compile(r"20[0-9]{2}(?: (?:HF|FD) ?[0-9]{1,3})?")
 CAPTURE_STATES = {"duration_limit", "processes_exited"}
-VALIDATION = "Numerical equivalence and physical validation require separate checks. Timing differences do not establish an improvement."
+INTERPRETATION = {
+    "summary": "Measurement comparability does not establish simulation equivalence or scientific validity.",
+    "measurement_compatibility": "Comparable means the available measurement bases and coverage passed the tool's checks.",
+    "workload_equivalence": "Verify mesh, materials, sources, boundary conditions, incrementation and workload separately.",
+    "numerical_equivalence": "Compare relevant numerical outputs using tolerances chosen for the study.",
+    "physical_validation": "Assess the results against appropriate physical or experimental evidence.",
+}
 
 
 def _dict(value):
@@ -33,13 +39,21 @@ def _load(path):
     except (ValueError, RecursionError):
         raise ValueError("An input is not a valid JSON audit report") from None
     report = _dict(report)
-    if (report.get("kind") != "audit" or type(report.get("schema_version")) is not int
-            or report["schema_version"] != SCHEMA_VERSION):
-        raise ValueError("Comparison requires version 1 audit reports")
-    run_id = report.get("run_id")
-    if not isinstance(run_id, str) or RUN_ID.fullmatch(run_id) is None:
-        raise ValueError("An input audit has an invalid run identifier")
-    return report
+    version = report.get("schema_version")
+    if report.get("kind") != "audit" or type(version) is not int or version not in (1, SCHEMA_VERSION):
+        raise ValueError("Comparison requires schema 1 or 2 audit reports")
+    if version == 1:
+        # RC1 labeled the random audit UUID as run_id.
+        audit_id = report.get("run_id")
+        run_id = None
+    else:
+        audit_id = report.get("audit_id")
+        if "run_id" not in report:
+            raise ValueError("A schema 2 audit must contain a simulation run ID or null")
+        run_id = validate_run_id(report["run_id"])
+    if not isinstance(audit_id, str) or AUDIT_ID.fullmatch(audit_id) is None:
+        raise ValueError("An input audit has an invalid audit execution ID")
+    return {**report, "audit_id": audit_id, "run_id": run_id}
 
 
 def _observation(report, key):
@@ -169,10 +183,18 @@ def _compare_metric(left, right, key):
     return result
 
 
+def _run_relationship(left, right):
+    if left is None or right is None:
+        return "unknown"
+    if left == right:
+        return "same_declared_run"
+    return "different_declared_runs"
+
+
 def compare(paths):
     reports = [_load(path) for path in paths]
-    if len(reports) < 2 or len({report["run_id"] for report in reports}) != len(reports):
-        raise ValueError("Supply at least two audit reports with distinct run identifiers")
+    if len(reports) < 2 or len({report["audit_id"] for report in reports}) != len(reports):
+        raise ValueError("Supply at least two reports from distinct audit executions")
     baseline, *candidates = reports
     base_config = _context(baseline)
     comparisons = []
@@ -185,7 +207,9 @@ def compare(paths):
             for b in (candidate_config[key],)
         ]
         comparisons.append({
+            "candidate_audit_id": candidate["audit_id"],
             "candidate_run_id": candidate["run_id"],
+            "run_relationship": _run_relationship(baseline["run_id"], candidate["run_id"]),
             "candidate_termination": _run_state(candidate),
             "configuration": config,
             "measurements": [_compare_metric(baseline, candidate, key) for key in MEASURES],
@@ -195,12 +219,14 @@ def compare(paths):
         "kind": "comparison",
         "tool_version": __version__,
         "audit_timestamp_utc": utc_now(),
+        "baseline_audit_id": baseline["audit_id"],
         "baseline_run_id": baseline["run_id"],
         "baseline_termination": _run_state(baseline),
         "comparisons": comparisons,
+        "interpretation": INTERPRETATION,
         "measurement_limitations": [
-            VALIDATION,
-            "Deltas use candidate minus baseline. Comparable means the available measurement bases passed the tool's checks.",
-            "Operator review must verify equivalent workload, selected processes, sampling window, and output selection.",
+            "Numerical equivalence and physical validation require separate checks.",
+            "Deltas use candidate minus baseline.",
+            "Confirm the selected processes, sampling windows, and files before interpreting changes.",
         ],
     }

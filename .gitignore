@@ -27,3 +27,25 @@ scratch/
 !tests/fixtures/*.dat
 !tests/fixtures/*.log
 !tests/fixtures/*.jsonl
+
+# Generated reports and private maps, including custom output directories.
+audit.json
+audit.html
+timeseries.csv
+comparison.json
+comparison.html
+input-map.json
+*.cae
+*.jnl
+*.prt
+*.res
+
+# Only these checked-in, synthetic example reports are release artifacts.
+!/examples/baseline/audit.json
+!/examples/baseline/audit.html
+!/examples/baseline/timeseries.csv
+!/examples/candidate/audit.json
+!/examples/candidate/audit.html
+!/examples/candidate/timeseries.csv
+!/examples/comparison/comparison.json
+!/examples/comparison/comparison.html

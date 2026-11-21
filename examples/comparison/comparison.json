@@ -1,13 +1,16 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "kind": "comparison",
-  "tool_version": "1.0.0rc1",
-  "audit_timestamp_utc": "2026-11-21T16:43:26+00:00",
-  "baseline_run_id": "88258f49-249c-492e-944f-f8be72661dc8",
+  "tool_version": "1.0.0rc2",
+  "audit_timestamp_utc": "2026-11-21T17:09:22+00:00",
+  "baseline_audit_id": "78b2f0a0-1032-4853-86ae-86b7dc8cb355",
+  "baseline_run_id": "synthetic-baseline",
   "baseline_termination": "successful",
   "comparisons": [
     {
-      "candidate_run_id": "a9cad03b-7e5e-463a-8f8f-e67ea43eb61f",
+      "candidate_audit_id": "e14f2aa3-b7c7-4fdc-bce4-085d990c5001",
+      "candidate_run_id": "synthetic-candidate",
+      "run_relationship": "different_declared_runs",
       "candidate_termination": "successful",
       "configuration": [
         {
@@ -313,9 +316,16 @@
       ]
     }
   ],
+  "interpretation": {
+    "summary": "Measurement comparability does not establish simulation equivalence or scientific validity.",
+    "measurement_compatibility": "Comparable means the available measurement bases and coverage passed the tool's checks.",
+    "workload_equivalence": "Verify mesh, materials, sources, boundary conditions, incrementation and workload separately.",
+    "numerical_equivalence": "Compare relevant numerical outputs using tolerances chosen for the study.",
+    "physical_validation": "Assess the results against appropriate physical or experimental evidence."
+  },
   "measurement_limitations": [
-    "Numerical equivalence and physical validation require separate checks. Timing differences do not establish an improvement.",
-    "Deltas use candidate minus baseline. Comparable means the available measurement bases passed the tool's checks.",
-    "Operator review must verify equivalent workload, selected processes, sampling window, and output selection."
+    "Numerical equivalence and physical validation require separate checks.",
+    "Deltas use candidate minus baseline.",
+    "Confirm the selected processes, sampling windows, and files before interpreting changes."
   ]
 }
